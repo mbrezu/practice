@@ -1,0 +1,9 @@
+
+I'm trying to learn Common Lisp. I'm playing with Emacs, SLIME and SBCL.
+
+This directory contains a list of CL-noob solutions to some of the
+easier problems Ed Karrels collection.
+
+http://www.karrels.org/Ed/ACM/
+
+
