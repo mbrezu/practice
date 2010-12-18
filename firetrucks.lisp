@@ -6,8 +6,9 @@
 ;;;; (in-package :acm-1991-finals-firetrucks)
 ;;;; (solver *sample-input*)
 
-(defpackage :acm-1991-finals-firetrucks
-  (:use :common-lisp))
+(defpackage #:acm-1991-finals-firetrucks
+  (:use :common-lisp)
+  (:use :mbrezu-utils))
 
 (proclaim '(optimize (speed 0) (debug 3)))
 
