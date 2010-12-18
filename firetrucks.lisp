@@ -1,12 +1,12 @@
 ;;;; This problem is from a 1991 ACM contest.
 ;;;; http://www.karrels.org/Ed/ACM/91/prob_a.html
 
-(defpackage :acm-1991-karrels-firetrucks
+(defpackage :acm-1991-finals-firetrucks
   (:use :common-lisp))
 
 (proclaim '(optimize (speed 0) (debug 3)))
 
-(in-package :acm-1991-karrels-firetrucks)
+(in-package :acm-1991-finals-firetrucks)
 
 (defparameter *sample-input* "6
 1 2
