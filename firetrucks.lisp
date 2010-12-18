@@ -1,6 +1,11 @@
 ;;;; This problem is from a 1991 ACM contest.
 ;;;; http://www.karrels.org/Ed/ACM/91/prob_a.html
 
+;;;; To see it in action:
+;;;; (load "firetrucks.lisp")
+;;;; (in-package :acm-1991-finals-firetrucks)
+;;;; (solver *sample-input*)
+
 (defpackage :acm-1991-finals-firetrucks
   (:use :common-lisp))
 
@@ -148,3 +153,4 @@
                       "There are ~d routes from the firestation to streetcorner ~d.~%"
                       (length paths)
                       (input-target input)))))))
+
