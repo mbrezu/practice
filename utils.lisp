@@ -1,7 +1,4 @@
 
-(defpackage #:mbrezu-utils
-  (:use :common-lisp))
-
 (in-package :mbrezu-utils)
 
 (defun print-hash-table (hash-table &optional (stream t))
@@ -20,3 +17,9 @@
 (defun memoize-symbol (symbol)
   (setf (symbol-function symbol)
         (memo (symbol-function symbol))))
+
+(defun read-input-lines (stream)
+  (loop
+     for line = (read-line stream nil nil)
+     while line
+     collect line))

@@ -1,5 +1,5 @@
 
-(defpackage #:practice-asd
+(defpackage :practice-asd
   (:use :common-lisp :asdf))
 
 (in-package :practice-asd)
@@ -13,6 +13,8 @@
   :description "Learning Common Lisp exercises."
   :components ((:file "firetrucks" :depends-on ("utils"))
                (:file "trivert" :depends-on ("utils"))
-               (:file "utils")))
+               (:file "utils" :depends-on ("packages"))
+               (:file "packages")))
+
 
 

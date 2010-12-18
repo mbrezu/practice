@@ -2,13 +2,8 @@
 ;;;; http://www.karrels.org/Ed/ACM/91/prob_a.html
 
 ;;;; To see it in action:
-;;;; (load "firetrucks.lisp")
 ;;;; (in-package :acm-1991-finals-firetrucks)
 ;;;; (solver *sample-input*)
-
-(defpackage #:acm-1991-finals-firetrucks
-  (:use :common-lisp)
-  (:use :mbrezu-utils))
 
 (proclaim '(optimize (speed 0) (debug 3)))
 
@@ -68,12 +63,7 @@
          ,@body))))
 
 (defun split-input (stream)
-  (labels ((read-input (stream)
-             (loop
-                for line = (read-line stream nil nil)
-                while line
-                collect line))
-           (iter (line-list inputs current-input state)
+  (labels ((iter (line-list inputs current-input state)
              (if (null line-list)
                  (if (not (null current-input))
                      (nreverse (cons (fix-input current-input) inputs))
@@ -97,15 +87,10 @@
                                 inputs
                                 (add-link current-input source target)
                                 :in-input))))))))
-    (iter (read-input stream)
+    (iter (read-input-lines stream)
           nil
           nil
           :out-of-input)))
-
-(defun print-hash-table (hash-table &optional (stream t))
-  (maphash #'(lambda (key value)
-               (format stream "~a => ~a~%" key value))
-           hash-table))
 
 (defun make-graph (links)
   (labels ((add-link (hash-table source target)
