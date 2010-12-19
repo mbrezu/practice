@@ -62,10 +62,8 @@
 (defun read-input (str)
   (labels ((parse-lines (lines)
              (mapcar #'(lambda (line)
-                         (read-from-string (concatenate 'string
-                                                        "("
-                                                        line
-                                                        ")")))
+                         (read-from-string
+                          (concatenate 'string "(" line ")")))
                      lines))
            (iter (lines acc)
              (if (null lines)
