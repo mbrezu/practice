@@ -75,18 +75,6 @@
                  (make-instance 'domino-board
                                 :input array)))))
 
-(defun next-pos (pos)
-  (destructuring-bind ((x1 y1) (x2 y2)) pos
-    (cond
-      ((and (= x1 7)
-            (= y1 6))
-       nil)
-      ((= x1 7) `((0 ,(+ y1 1))
-                  (0 ,(+ y2 1))))
-      ((= x1 x2) `((,x1 ,y1) (,(+ 1 x1) ,y1)))
-      ((= y1 y2) `((,(+ 1 x1) ,y1) (,(+ 1 x1) ,(+ 1 y1))))
-      (t nil))))
-
 (defun in-range (pos)
   (destructuring-bind ((x1 y1) (x2 y2)) pos
     (and (>= x1 0)
@@ -99,11 +87,11 @@
          (<= y2 6))))
 
 (defun all-positions ()
-  (loop
-     for pos = '((0 0) (0 1)) then (next-pos pos)
-     while pos
-     when (in-range pos)
-     collect pos))
+  (remove-if-not #'in-range
+                 (loop for k from 0 to 6
+                    append (loop for i from 0 to 7
+                              collect `((,i ,k) (,i ,(1+ k)))
+                              collect `((,i ,k) (,(1+ i) ,k))))))
 
 (defparameter *all-positions* (all-positions))
 
