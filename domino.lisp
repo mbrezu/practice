@@ -146,21 +146,19 @@
 (defun copy-array (array)
   (read-from-string (format nil "~a" array)))
 
-(defun allocate (db bone-index allocate-count)
-  (if (= bone-index allocate-count)
+(defun allocate (db bones)
+  (if (null bones)
       (list (copy-array (db-allocated db)))
-      (apply #'append (loop
-                         for pos in (find-positions-for-bone db bone-index)
-                         do
-                           (allocate-bone db bone-index pos)
-                         collect
-                           (allocate db (1+ bone-index) allocate-count)
-                         do
-                           (deallocate-bone db pos)))))
-
-(defparameter *psi*
-  (with-input-from-string (str *sample-input*)
-    (read-input str)))
+      (let ((bone-index (car bones))
+            (bones-rest (cdr bones)))
+        (apply #'append (loop
+                           for pos in (find-positions-for-bone db bone-index)
+                           do
+                             (allocate-bone db bone-index pos)
+                           collect
+                             (allocate db bones-rest)
+                           do
+                             (deallocate-bone db pos))))))
 
 (defun print-array (array)
   (loop for i from 0 to 6 do
@@ -168,8 +166,24 @@
             (format t "~4d" (aref array i k)))
        (format t "~%")))
 
+;;; Sorting the bones so that we try first the bones with fewer
+;;; alternatives (thus making the number of alternatives smaller for
+;;; bones tried later because some positions are already occupied)
+;;; makes the program an order of magnitude faster.
+(defun sorted-bones (db)
+  (let* ((bones (loop for bone from 0 to 27 collect bone))
+         (bones-and-positions (mapcar #'(lambda (bone)
+                                          (cons bone
+                                                (find-positions-for-bone db bone)))
+                                      bones))
+         (sorted-bones-and-positions (sort bones-and-positions
+                                           #'(lambda (l1 l2)
+                                               (< (length l1) (length l2)))
+                                           :key #'cdr)))
+    (mapcar #'car sorted-bones-and-positions)))
+
 (defun solve-input (input index)
-  (let ((solutions (allocate input 0 28)))
+  (let ((solutions (allocate input (sorted-bones input))))
     (format t "~&Layout #~d:~%~%" index)
     (print-array (db-input input))
     (format t "~%Maps resulting from layout #~d are:~%~%" index)
