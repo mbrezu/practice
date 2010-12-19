@@ -146,16 +146,17 @@
 (defun copy-array (array)
   (read-from-string (format nil "~a" array)))
 
-(defun allocate (db bone-index allocate-count victory-callback)
+(defun allocate (db bone-index allocate-count)
   (if (= bone-index allocate-count)
-      (funcall victory-callback (db-allocated db))
-      (progn
-        (loop
-           for pos in (find-positions-for-bone db bone-index)
-           do
-             (allocate-bone db bone-index pos)
-             (allocate db (1+ bone-index) allocate-count victory-callback)
-             (deallocate-bone db pos)))))
+      (list (copy-array (db-allocated db)))
+      (apply #'append (loop
+                         for pos in (find-positions-for-bone db bone-index)
+                         do
+                           (allocate-bone db bone-index pos)
+                         collect
+                           (allocate db (1+ bone-index) allocate-count)
+                         do
+                           (deallocate-bone db pos)))))
 
 (defparameter *psi*
   (with-input-from-string (str *sample-input*)
@@ -168,13 +169,10 @@
        (format t "~%")))
 
 (defun solve-input (input index)
-  (let ((solutions))
+  (let ((solutions (allocate input 0 28)))
     (format t "~&Layout #~d:~%~%" index)
     (print-array (db-input input))
     (format t "~%Maps resulting from layout #~d are:~%~%" index)
-    (allocate input 0 28 #'(lambda (sol)
-                             (setf solutions (cons (copy-array sol)
-                                                   solutions))))
     (loop for solution in solutions do
          (print-array solution)
          (format t "~%"))
