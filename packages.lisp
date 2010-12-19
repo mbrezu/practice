@@ -14,3 +14,7 @@
   (:use :common-lisp)
   (:use :mbrezu-utils))
 
+(defpackage :acm-1991-finals-domino
+  (:use :common-lisp)
+  (:use :mbrezu-utils))
+
