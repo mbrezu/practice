@@ -64,19 +64,16 @@
              (mapcar #'(lambda (line)
                          (read-from-string
                           (concatenate 'string "(" line ")")))
-                     lines))
-           (iter (lines acc)
-             (if (null lines)
-                 (nreverse acc)
-                 (let ((layout (parse-lines (subseq lines 0 7))))
-                   (iter (subseq lines 7)
-                         (cons (make-instance
-                                'domino-board
-                                :input (make-array '(7 8)
-                                                   :initial-contents layout))
-                               acc))))))
-    (iter (read-input-lines str)
-          nil)))
+                     lines)))
+    (loop
+       for lines = (read-input-lines str) then (subseq lines 7)
+       while lines
+       collect (let ((array (make-array
+                             '(7 8)
+                             :initial-contents (parse-lines
+                                                (subseq lines 0 7)))))
+                 (make-instance 'domino-board
+                                :input array)))))
 
 (defun next-pos (pos)
   (destructuring-bind ((x1 y1) (x2 y2)) pos
