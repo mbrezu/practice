@@ -134,14 +134,14 @@
       (list (copy-array (db-allocated db)))
       (let ((bone-index (car bones))
             (bones-rest (cdr bones)))
-        (apply #'append (loop
-                           for pos in (find-positions-for-bone db bone-index)
-                           do
-                             (allocate-bone db bone-index pos)
-                           collect
-                             (allocate db bones-rest)
-                           do
-                             (deallocate-bone db pos))))))
+        (loop
+           for pos in (find-positions-for-bone db bone-index)
+           do
+             (allocate-bone db bone-index pos)
+           append
+             (allocate db bones-rest)
+           do
+             (deallocate-bone db pos)))))
 
 (defun print-array (array)
   (loop for i from 0 to 6 do
