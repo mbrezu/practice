@@ -15,6 +15,7 @@
                (:file "trivert" :depends-on ("utils"))
                (:file "domino" :depends-on ("utils"))
                (:file "utils" :depends-on ("packages"))
+               (:file "skyline" :depends-on ("utils"))
                (:file "packages")))
 
 

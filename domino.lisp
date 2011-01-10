@@ -70,10 +70,8 @@
        while lines
        collect (let ((array (make-array
                              '(7 8)
-                             :initial-contents (parse-lines
-                                                (subseq lines 0 7)))))
-                 (make-instance 'domino-board
-                                :input array)))))
+                             :initial-contents (parse-lines (subseq lines 0 7)))))
+                 (make-instance 'domino-board :input array)))))
 
 (defun in-range (pos)
   (destructuring-bind ((x1 y1) (x2 y2)) pos
